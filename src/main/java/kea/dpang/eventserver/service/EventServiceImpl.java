@@ -9,7 +9,6 @@ import kea.dpang.eventserver.entity.EventEntity;
 import kea.dpang.eventserver.entity.ItemEventEntity;
 import kea.dpang.eventserver.entity.SellerEventEntity;
 import kea.dpang.eventserver.repository.EventRepository;
-import kea.dpang.eventserver.repository.EventTargetItemRepository;
 import kea.dpang.eventserver.repository.ItemEventRepository;
 import kea.dpang.eventserver.repository.SellerEventRepository;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +24,7 @@ import java.util.List;
 public class EventServiceImpl implements EventService{
 
     private final EventRepository eventRepository;
-    private final EventTargetItemRepository eventTargetItemRepository;
+//    private final EventTargetItemRepository eventTargetItemRepository;
     private final ItemEventRepository itemEventRepository;
     private final SellerEventRepository sellerEventRepository;
 
