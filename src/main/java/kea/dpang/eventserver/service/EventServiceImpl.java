@@ -1,22 +1,28 @@
 package kea.dpang.eventserver.service;
 
-import kea.dpang.eventserver.dto.request.ItemEventCreateDto;
-import kea.dpang.eventserver.dto.request.SellerEventCreateDto;
-import kea.dpang.eventserver.dto.response.AllEventGetDto;
-import kea.dpang.eventserver.dto.response.ItemEventGetDto;
-import kea.dpang.eventserver.dto.response.SellerEventGetDto;
-import kea.dpang.eventserver.entity.EventEntity;
-import kea.dpang.eventserver.entity.ItemEventEntity;
-import kea.dpang.eventserver.entity.SellerEventEntity;
+import kea.dpang.eventserver.dto.ItemEventDto;
+import kea.dpang.eventserver.dto.SellerEventDto;
+import kea.dpang.eventserver.dto.EventDto;
+import kea.dpang.eventserver.dto.TargetItemDto;
+import kea.dpang.eventserver.dto.request.RequestItemEventDto;
+import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
+import kea.dpang.eventserver.entity.*;
+import kea.dpang.eventserver.exception.EventNotFoundException;
+import kea.dpang.eventserver.exception.EventTargetItemNotFoundException;
 import kea.dpang.eventserver.repository.EventRepository;
+import kea.dpang.eventserver.repository.EventTargetItemRepository;
 import kea.dpang.eventserver.repository.ItemEventRepository;
 import kea.dpang.eventserver.repository.SellerEventRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -24,142 +30,108 @@ import java.util.List;
 public class EventServiceImpl implements EventService{
 
     private final EventRepository eventRepository;
-//    private final EventTargetItemRepository eventTargetItemRepository;
+    private final EventTargetItemRepository eventTargetItemRepository;
     private final ItemEventRepository itemEventRepository;
     private final SellerEventRepository sellerEventRepository;
 
-    @Override
-    public List<ItemEventGetDto> getItemEvents() {
-        List<ItemEventEntity> itemEventEntities = itemEventRepository.findAll();
-        List<ItemEventGetDto> itemEventList = new ArrayList<>();
-        for(ItemEventEntity itemEventEntity:itemEventEntities){
-            itemEventList.add(ItemEventGetDto
-                    .builder()
-                            .id(itemEventEntity.getId())
-                            .event_name(itemEventEntity.getEvent_name())
-                            .event_status(itemEventEntity.getEvent_status())
-                            .start_date(itemEventEntity.getStart_date())
-                            .end_date(itemEventEntity.getEnd_date())
-                            .image_path(itemEventEntity.getImage_path())
-                            .build());
-        }
-        return itemEventList;
+    // 현재 날짜과 비교해 이벤트의 상태를 업데이트한다.
+    public void updateEventStatus(){
+        LocalDate current = LocalDate.now();
+        eventRepository.findAll().forEach(event->{
+            if(current.isBefore(event.getStartDate())){
+                event.updateStatus(Status.WAITING);
+            }
+            else if(current.isAfter(event.getStartDate()) || current.isBefore(event.getEndDate())){
+                event.updateStatus(Status.PROCEEDING);
+            }
+            else {
+                event.updateStatus(Status.END);
+            }
+        });
     }
 
     @Override
-    public List<SellerEventGetDto> getSellerEvents() {
-        List<SellerEventEntity> sellerEventEntities = sellerEventRepository.findAll();
-        List<SellerEventGetDto> sellerEventList = new ArrayList<>();
-        for(SellerEventEntity sellerEventEntity:sellerEventEntities){
-            sellerEventList.add(SellerEventGetDto
-                    .builder()
-                    .id(sellerEventEntity.getId())
-                    .event_name(sellerEventEntity.getEvent_name())
-                    .event_status(sellerEventEntity.getEvent_status())
-                    .start_date(sellerEventEntity.getStart_date())
-                    .end_date(sellerEventEntity.getEnd_date())
-                    .image_path(sellerEventEntity.getImage_path())
-                    .seller_id(sellerEventEntity.getSeller_id())
-                    .build());
-        }
-        return sellerEventList;
+    public Page<ItemEventDto> getItemEventList(Pageable pageable){
+        Page<ItemEventEntity> eventPage = itemEventRepository.findAll(pageable);
+
+        return eventPage.map(ItemEventEntity::toItemEventDto);
     }
 
     @Override
-    public List<AllEventGetDto> getAllEvent() {
-        List<EventEntity> eventEntities = eventRepository.findAll();
-        List<AllEventGetDto> allEventList = new ArrayList<>();
-        for(EventEntity eventEntity:eventEntities){
-            allEventList.add(AllEventGetDto.builder()
-                            .id(eventEntity.getId())
-                            .event_status(eventEntity.getEvent_status())
-                            .event_name(eventEntity.getEvent_name())
-                            .registration_date(eventEntity.getRegistration_date())
-                            .start_date(eventEntity.getStart_date())
-                            .end_date(eventEntity.getEnd_date())
-                    //type 추가 필요
-                    .build());
-        }
-        return allEventList;
+    public Page<SellerEventDto> getSellerEventList (Pageable pageable){
+        Page<SellerEventEntity> eventPage = sellerEventRepository.findAll(pageable);
+
+        return eventPage.map(SellerEventEntity::toSellerEventDto);
     }
 
     @Override
-    public ItemEventCreateDto getItemEventDetail(Long id) {
-        ItemEventEntity itemEvent = itemEventRepository.findById(id).get();
-        return ItemEventCreateDto.builder()
-                .event_name(itemEvent.getEvent_name())
-                .image_path(itemEvent.getImage_path())
-                .start_date(itemEvent.getStart_date())
-                .end_date(itemEvent.getEnd_date())
-                .discount_rate(itemEvent.getDiscount_rate())
-                .item_id(itemEvent.getItem_id())
-                .build();
+    public Page<EventDto> getEventList(Pageable pageable) {
+        Page<EventEntity> eventEntities = eventRepository.findAll(pageable);
+        return eventEntities.map(EventEntity::toEventDto);
     }
 
     @Override
-    public SellerEventCreateDto getSellerEventDetail(Long id) {
-        SellerEventEntity sellerEvent = sellerEventRepository.findById(id).get();
-        return SellerEventCreateDto.builder()
-                .event_name(sellerEvent.getEvent_name())
-                .image_path(sellerEvent.getImage_path())
-                .start_date(sellerEvent.getStart_date())
-                .end_date(sellerEvent.getEnd_date())
-                .discount_rate(sellerEvent.getDiscount_rate())
-                .seller_id(sellerEvent.getSeller_id())
-                .build();
+    public ItemEventDto getItemEvent(Long id) {
+        ItemEventEntity itemEvent = itemEventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
+        return itemEvent.toItemEventDto();
     }
 
     @Override
-    public void createItemEvent(ItemEventCreateDto itemEvent) {
-        itemEventRepository.save(ItemEventEntity.builder()
-                        .event_name(itemEvent.getEvent_name())
-                        .discount_rate(itemEvent.getDiscount_rate())
-                        .image_path(itemEvent.getImage_path())
-                        .start_date(itemEvent.getStart_date())
-                        .end_date(itemEvent.getEnd_date())
-                .build());
+    public SellerEventDto getSellerEvent(Long id) {
+        SellerEventEntity sellerEvent = sellerEventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
+        return sellerEvent.toSellerEventDto();
     }
 
     @Override
-    public void createSellerEvent(SellerEventCreateDto sellerEvent) {
-        sellerEventRepository.save(SellerEventEntity.builder()
-                .event_name(sellerEvent.getEvent_name())
-                .discount_rate(sellerEvent.getDiscount_rate())
-                .image_path(sellerEvent.getImage_path())
-                .start_date(sellerEvent.getStart_date())
-                .end_date(sellerEvent.getEnd_date())
-                .build());
+    public void createItemEvent(RequestItemEventDto itemEvent) {
+        ItemEventEntity itemEventEntity = itemEvent.toItemEventEntity();
+        itemEventRepository.save(itemEventEntity);
+        eventTargetItemRepository.saveAll(itemEvent.toEventTargetItems(itemEventEntity));
+        updateEventStatus();
     }
 
     @Override
-    public void updateItemEvent(Long id, ItemEventCreateDto itemEvent) {
-        ItemEventEntity targetItemEvent = itemEventRepository.findById(id).get();
-        targetItemEvent.updateItemEvent(
-                itemEvent.getEvent_name(),
-                itemEvent.getImage_path(),
-                null,
-                itemEvent.getDiscount_rate(),
-                itemEvent.getStart_date(),
-                itemEvent.getEnd_date()
-        );
+    public void createSellerEvent(RequestSellerEventDto sellerEvent) {
+        sellerEventRepository.save(sellerEvent.toSellerEventEntity());
+        updateEventStatus();
     }
 
     @Override
-    public void updateSellerEvent(Long id, SellerEventCreateDto sellerEvent) {
-        SellerEventEntity targetSellerEvent = sellerEventRepository.findById(id).get();
-        targetSellerEvent.updateSellerEvent(
-                sellerEvent.getEvent_name(),
-                sellerEvent.getImage_path(),
-                null,
-                sellerEvent.getDiscount_rate(),
-                sellerEvent.getStart_date(),
-                sellerEvent.getEnd_date(),
-                sellerEvent.getSeller_id()
-        );
+    public void updateItemEvent(Long id, ItemEventDto itemEvent) {
+        ItemEventEntity itemEventEntity = itemEventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
+        itemEventEntity.updateItemEvent(itemEvent);
+
+        itemEvent.getTargetItems().stream()
+                .map(TargetItemDto::getItemId)
+                .forEach(itemId -> {
+                    eventTargetItemRepository.findEventTargetItemByItemAndEvent(itemId, itemEventEntity)
+                            .orElseThrow(() -> new EventTargetItemNotFoundException(itemId))
+                            .update(itemId);
+                });
+    }
+
+    @Override
+    public void updateSellerEvent(Long id, SellerEventDto sellerEvent) {
+        SellerEventEntity targetSellerEvent = sellerEventRepository.findById(id)
+                .orElseThrow(() -> new EventNotFoundException(id));
+        targetSellerEvent.updateSellerEvent(sellerEvent);
     }
 
     @Override
     public void deleteEvent(List<Long> ids) {
-        eventRepository.deleteAllById(ids);
+        // 요청받은 ID 리스트를 순회하면서 각각의 Event를 삭제한다.
+        for (Long id:ids){
+
+            // 데이터베이스에서 ID에 해당하는 Evnet 객체를 조회한다.
+            EventEntity event = eventRepository.findById(id)
+                    .orElseThrow(() -> new EventNotFoundException(id));
+
+            // 조회한 Event를 데이터베이스에서 삭제한다.
+            eventRepository.delete(event);
+        }
     }
+
 }

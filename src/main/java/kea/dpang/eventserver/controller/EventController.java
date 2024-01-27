@@ -1,76 +1,106 @@
 package kea.dpang.eventserver.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.websocket.server.PathParam;
-import kea.dpang.eventserver.dto.request.ItemEventCreateDto;
-import kea.dpang.eventserver.dto.request.SellerEventCreateDto;
-import kea.dpang.eventserver.dto.response.AllEventGetDto;
-import kea.dpang.eventserver.dto.response.ItemEventGetDto;
-import kea.dpang.eventserver.dto.response.SellerEventGetDto;
-import kea.dpang.eventserver.service.EventServiceImpl;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.Parameter;
+import kea.dpang.eventserver.base.BaseResponse;
+import kea.dpang.eventserver.base.SuccessResponse;
+import kea.dpang.eventserver.dto.EventDto;
+import kea.dpang.eventserver.dto.ItemEventDto;
+import kea.dpang.eventserver.dto.SellerEventDto;
+import kea.dpang.eventserver.dto.request.RequestItemEventDto;
+import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
-@Tag(name = "Event", description = "Event 서비스 API")
-@Controller
-@RequiredArgsConstructor
-@RestController("/events")
-@Slf4j
-public class EventController {
+/**
+ * 이벤트 서비스 컨트롤러 인터페이스
+ * @author Tomas
+ */
+public interface EventController {
 
-    private final EventServiceImpl eventService;
+    /**
+     * API
+     * GET : 사용자 - 상품 이벤트 목록 조회
+     * @param pageable 페이지네이션을 위한 객체
+     * @return 응답 코드(200), 상품 이벤트 목록
+     */
+    ResponseEntity<SuccessResponse<Page<ItemEventDto>>> getItemEventList(Pageable pageable);
 
-    // 사용자 - 상품 이벤트 목록 조회(get)
-    @GetMapping("/user/item")
-    @Operation(summary = "사용자 기능 : 상품 이벤트 목록 조회", description = "사용자가 자사몰의 예정/진행중/종료 상품 이벤트를 모두 조회할 수 있습니다.")
-    public List<ItemEventGetDto> getItemEvents(){
-        return eventService.getItemEvents();
-    }
-    // 사용자 - 판매처 이벤트 목록 조회(get)
-    @GetMapping("/user/seller")
-    @Operation(summary = "사용자 기능 : 판매처 이벤트 목록 조회", description = "사용자가 자사몰의 예정/진행중/종료 판매처 이벤트를 모두 조회할 수 있습니다.")
-    public List<SellerEventGetDto> getSellerEvents(){
-        return eventService.getSellerEvents();
-    }
-    // 관리자 - 이벤트 목록 조회(get)
-    @GetMapping("/admin")
-    @Operation(summary = "관리자 기능 : 이벤트 목록 조회", description = "관리자가 자사몰의 예정/진행중/종료 이벤트를 모두 조회할 수 있습니다.")
-    public List<AllEventGetDto> getAllEvents(){
-        return eventService.getAllEvent();
-    }
-    // 관리자 - 상품 이벤트 등록(post)
-    @PostMapping("/admin/item")
-    @Operation(summary = "관리자 기능 : 상품 이벤트 등록", description = "관리자가 자사몰에 상품 이벤트를 등록할 수 있습니다.")
-    public void postItemEvent(@RequestBody ItemEventCreateDto request){
-        eventService.createItemEvent(request);
-    }
-    // 관리자 - 판매처 이벤트 등록(post)
-    @PostMapping("/admin/seller")
-    @Operation(summary = "관리자 기능 : 판매처 이벤트 등록", description = "관리자가 자사몰에 판매처 이벤트를 등록할 수 있습니다.")
-    public void postSellerEvent(@RequestBody SellerEventCreateDto request){
-        eventService.createSellerEvent(request);
-    }
-    // 관리자 - 상품 이벤트 수정(put)
-    @PutMapping("/admin/item/{eventId}")
-    @Operation(summary = "관리자 기능 : 상품 이벤트 수정", description = "관리자가 자사몰에 등록된 상품 이벤트를 수정할 수 있습니다.")
-    public void putItemEvent(@PathParam("eventId") Long id, @RequestBody ItemEventCreateDto request){
-        eventService.updateItemEvent(id,request);
-    }
-    // 관리자 - 판매처 이벤트 수정(put)
-    @PutMapping("/admin/seller/{eventId}")
-    @Operation(summary = "관리자 기능 : 판매처 이벤트 수정", description = "관리자가 자사몰에 등록된 관리자 이벤트를 수정할 수 있습니다.")
-    public void putSellerEvent(@PathParam("eventId") Long id, @RequestBody SellerEventCreateDto request){
-        eventService.updateSellerEvent(id,request);
-    }
-    // 관리자 - 이벤트 삭제(delete)
-    @DeleteMapping("/dlete")
-    @Operation(summary = "관리자 기능 : 이벤트 삭제", description = "관리자가 자사몰에 등록된 모든 종류의 이벤트를 하나 혹은 다수로 삭제할 수 있습니다.")
-    public void deleteEvents(@RequestParam List<Long> ids){
-        eventService.deleteEvent(ids);
-    }
+    /**
+     * API
+     * GET : 사용자 - 판매처 이벤트 목록 조회
+     * @param pageable 페이지네이션을 위한 객체
+     * @return 응답 코드(200), 판매처 이벤트 목록
+     */
+    ResponseEntity<SuccessResponse<Page<SellerEventDto>>> getSellerEventList(Pageable pageable);
+
+    /**
+     * API
+     * GET : 관리자 - 전체 이벤트 목록 조회
+     * @param pageable 페이지네이션을 위한 객체
+     * @return 응답 코드(200), 상품 이벤트 목록
+     */
+    ResponseEntity<SuccessResponse<Page<EventDto>>> getAllEventList(Pageable pageable);
+
+    /**
+     * API
+     * POST : 관리자 - 상품 이벤트 등록
+     * @param itemEventDto 등록할 상품 이벤트에 대한 정보
+     * @return 응답 코드(201)
+     */
+    ResponseEntity<BaseResponse> createItemEvent(RequestItemEventDto itemEventDto);
+
+    /**
+     * API
+     * POST : 관리자 - 판매처 이벤트 등록
+     * @param sellerEventDto 등록할 판매처 이벤트에 대한 정보
+     * @return 응답 코드(201)
+     */
+    ResponseEntity<BaseResponse> postSellerEvent(RequestSellerEventDto sellerEventDto);
+
+    /**
+     * API
+     * PUT : 관리자 - 상품 이벤트 수정
+     * @param id 수정할 상품 이벤트의 ID
+     * @param itemEventDto 상품 이벤트의 수정 내용
+     * @return 응답 코드(200)
+     */
+    ResponseEntity<BaseResponse> updateItemEvent(Long id, ItemEventDto itemEventDto);
+
+    /**
+     * API
+     * PUT : 관리자 - 판매처 이벤트 수정
+     * @param id 수정할 판매처 이벤트의 ID
+     * @param request 판매처 이벤트의 수정 내용
+     * @return 응답 코드(200)
+     */
+    ResponseEntity<BaseResponse> putSellerEvent(Long id, SellerEventDto request);
+
+    /**
+     * API
+     * DELETE : 관리자 - 이벤트 삭제
+     * @param ids 삭제할 이벤트의 ID 목록
+     * @return 응답 코드(200)
+     */
+    ResponseEntity<BaseResponse> deleteEvents(List<Long> ids);
+
+    /**
+     * API
+     * GET : 상품 서비스 로부터 상품 ID에 해당하는 상품 이름을 반환받는다.
+     * @param itemId 이름을 반환받을 상품의 ID
+     * @return 응답 코드(200), 상품의 이름
+     */
+    ResponseEntity<SuccessResponse<String>> getItemName(Long itemId);
+
+    /**
+     * API
+     * GET : 판매처 서비스 로부터 판매처 ID에 해당하는 판매처 이름을 반환받는다.
+     * @param sellerId 이름을 반환받을 판매처의 ID
+     * @return 응답 코드(200), 판매처의 이름
+     */
+    ResponseEntity<SuccessResponse<String>> getSellerName(Long sellerId);
 }
