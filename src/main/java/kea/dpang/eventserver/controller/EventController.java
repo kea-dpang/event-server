@@ -98,9 +98,9 @@ public interface EventController {
 
     /**
      * API
-     * GET : 판매처 서비스 로부터 판매처 ID에 해당하는 판매처 이름을 반환받는다.
-     * @param sellerId 이름을 반환받을 판매처의 ID
-     * @return 응답 코드(200), 판매처의 이름
+     * GET : 판매처 서비스 로부터 판매처 이름에 해당하는 판매처 ID를 반환받는다.
+     * @param sellerName ID를 반환받을 판매처의 이름
+     * @return 응답 코드(200), 판매처의 ID
      */
-    ResponseEntity<SuccessResponse<String>> getSellerName(Long sellerId);
+    ResponseEntity<SuccessResponse<Long>> getSellerId(String sellerName);
 }
