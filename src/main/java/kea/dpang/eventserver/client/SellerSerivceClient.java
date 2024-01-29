@@ -9,6 +9,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 @FeignClient(name = "seller-service")
 // eureka를 사용하므로 url은 생략
 public interface SellerSerivceClient {
-    @GetMapping("/findName")
-    ResponseEntity<SuccessResponse<String>> getSellerName(@RequestParam Long id);
+    @GetMapping("/findId")
+    ResponseEntity<SuccessResponse<Long>> getSellerId(@RequestParam String Name);
 }
