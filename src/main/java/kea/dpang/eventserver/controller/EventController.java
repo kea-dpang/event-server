@@ -48,6 +48,22 @@ public interface EventController {
 
     /**
      * API
+     * GET : 특정 상품 이벤트의 상세 정보를 조회합니다.
+     * @param id 상품 이벤트 ID
+     * @return 응답 코드(200), 상품 이벤트 상세 정보
+     */
+    ResponseEntity<SuccessResponse<ItemEventDto>> getItemEvent (Long id);
+
+    /**
+     * API
+     * GET : 특정 판매처 이벤트의 상세 정보를 조회합니다.
+     * @param id 판매처 이벤트 ID
+     * @return 응답 코드(200), 판매처 이벤트 상세 정보
+     */
+    ResponseEntity<SuccessResponse<SellerEventDto>> getSellerEvent (Long id);
+
+    /**
+     * API
      * POST : 관리자 - 상품 이벤트 등록
      * @param itemEventDto 등록할 상품 이벤트에 대한 정보
      * @return 응답 코드(201)
