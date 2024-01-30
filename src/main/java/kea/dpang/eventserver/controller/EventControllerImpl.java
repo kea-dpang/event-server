@@ -33,7 +33,7 @@ public class EventControllerImpl implements EventController{
     private final SellerSerivceClient sellerSerivceClient;
 
     @Override
-    @GetMapping("/user/item")
+    @GetMapping("/item")
     @Operation(summary = "사용자 기능 : 상품 이벤트 목록 조회", description = "사용자가 자사몰의 예정/진행중/종료 상품 이벤트를 모두 조회할 수 있습니다.")
     public ResponseEntity<SuccessResponse<Page<ItemEventDto>>> getItemEventList(
             Pageable pageable
@@ -43,7 +43,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @GetMapping("/user/seller")
+    @GetMapping("/seller")
     @Operation(summary = "사용자 기능 : 판매처 이벤트 목록 조회", description = "사용자가 자사몰의 예정/진행중/종료 판매처 이벤트를 모두 조회할 수 있습니다.")
     public ResponseEntity<SuccessResponse<Page<SellerEventDto>>> getSellerEventList(
             Pageable pageable
@@ -63,7 +63,27 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @PostMapping("/admin/item")
+    @GetMapping("/item/{id}")
+    @Operation(summary = "관리자 기능 : 상품 이벤트 상세 조회")
+    public ResponseEntity<SuccessResponse<ItemEventDto>> getItemEvent(
+            @PathVariable @Parameter(description = "상품 이벤트 ID") Long id
+    ) {
+        ItemEventDto itemEvent = eventService.getItemEvent(id);
+        return ResponseEntity.ok(new SuccessResponse<>(200, "특정 상품 이벤트 조회가 완료되었습니다.", itemEvent));
+    }
+
+    @Override
+    @GetMapping("/seller/{id}")
+    @Operation(summary = "관리자 기능 : 판매처 이벤트 상세 조회")
+    public ResponseEntity<SuccessResponse<SellerEventDto>> getSellerEvent(
+            @PathVariable @Parameter(description = "판매처 이벤트 ID") Long id
+    ) {
+        SellerEventDto sellerEvent = eventService.getSellerEvent(id);
+        return ResponseEntity.ok(new SuccessResponse<>(200, "특정 판매처 이벤트 조회가 완료되었습니다.", sellerEvent));
+    }
+
+    @Override
+    @PostMapping("/item")
     @Operation(summary = "관리자 기능 : 상품 이벤트 등록", description = "관리자가 자사몰에 상품 이벤트를 등록할 수 있습니다.")
     public ResponseEntity<BaseResponse> createItemEvent(
             @RequestBody @Parameter(description = "상품 이벤트 생성 정보") RequestItemEventDto itemEventDto
@@ -73,7 +93,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @PostMapping("/admin/seller")
+    @PostMapping("/seller")
     @Operation(summary = "관리자 기능 : 판매처 이벤트 등록", description = "관리자가 자사몰에 판매처 이벤트를 등록할 수 있습니다.")
     public ResponseEntity<BaseResponse> postSellerEvent(
             @RequestBody @Parameter(description = "판매처 이벤트 생성 정보") RequestSellerEventDto sellerEventDto
@@ -83,7 +103,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @PutMapping("/admin/item/{id}")
+    @PutMapping("/item/{id}")
     @Operation(summary = "관리자 기능 : 상품 이벤트 수정", description = "관리자가 자사몰에 등록된 상품 이벤트를 수정할 수 있습니다.")
     public ResponseEntity<BaseResponse> updateItemEvent(
             @PathVariable @Parameter(description = "상품 이벤트 ID") Long id,
@@ -94,7 +114,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @PutMapping("/admin/seller/{id}")
+    @PutMapping("/seller/{id}")
     @Operation(summary = "관리자 기능 : 판매처 이벤트 수정", description = "관리자가 자사몰에 등록된 관리자 이벤트를 수정할 수 있습니다.")
     public ResponseEntity<BaseResponse> putSellerEvent(
             @PathVariable @Parameter(description = "판매처 이벤트 ID") Long id,
@@ -115,7 +135,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @GetMapping("/item/{itemId}")
+    @GetMapping("/toItme/{itemId}")
     @Operation(summary = "상품 ID로 상품 이름을 검색", description = "상품 이벤트를 등록하거나 수정할 때 이벤트 대상 상품을 검색하는 기능을 수행합니다.")
     public ResponseEntity<SuccessResponse<String>> getItemName(
             @PathVariable @Parameter(description = "상품 ID") Long itemId

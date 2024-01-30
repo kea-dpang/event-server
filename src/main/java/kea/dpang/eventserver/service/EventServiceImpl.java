@@ -41,7 +41,7 @@ public class EventServiceImpl implements EventService{
             if(current.isBefore(event.getStartDate())){
                 event.updateStatus(Status.WAITING);
             }
-            else if(current.isAfter(event.getStartDate()) || current.isBefore(event.getEndDate())){
+            else if(current.isAfter(event.getStartDate()) && current.isBefore(event.getEndDate())){
                 event.updateStatus(Status.PROCEEDING);
             }
             else {
