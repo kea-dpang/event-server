@@ -2,6 +2,7 @@ package kea.dpang.eventserver.entity;
 
 import jakarta.persistence.*;
 import kea.dpang.eventserver.dto.ItemEventDto;
+import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -41,11 +42,18 @@ public class ItemEventEntity extends EventEntity{
                 .build();
     }
 
+    public EventTargetItemEntity toEventTargetItem(Long itemId){
+        return EventTargetItemEntity.builder()
+                .eventId(this)
+                .itemId(itemId)
+                .build();
+    }
+
     /**
      * 상품 이벤트 수정 메서드
      * @param itemEvent 상품 이벤트의 부모 클래스
      */
-    public void updateItemEvent(ItemEventDto itemEvent) {
+    public void updateItemEvent(RequestItemEventDto itemEvent) {
         updateEvent(
                 itemEvent.getEventName(),
                 itemEvent.getImagePath(),

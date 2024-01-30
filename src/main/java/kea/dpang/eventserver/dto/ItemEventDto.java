@@ -62,30 +62,4 @@ public class ItemEventDto {
      */
     private Status eventStatus;
 
-    /**
-     * 상품 이벤트 객체를 build 하는 메서드
-     * @return build한 ItemEventEntity
-     */
-    public ItemEventEntity toItemEventEntity(){
-        return ItemEventEntity.builder()
-                .eventName(this.eventName)
-                .discountRate(this.discountRate)
-                .imagePath(this.imagePath)
-                .startDate(this.startDate)
-                .endDate(this.endDate)
-                .eventStatus(this.eventStatus)
-                .build();
-    }
-
-    /**
-     * 상품 이벤트 대상 상품을 build 하는 메서드
-     * @param itemEvent 이벤트 대상 상품들과 연결할 상품 이벤트 객체
-     * @return EventTargetItemEntity 리스트
-     */
-    public List<EventTargetItemEntity> toEventTargetItems(ItemEventEntity itemEvent) {
-        return this.targetItems.stream()
-                .map(targetItem -> targetItem.toEventTargetItem(itemEvent))
-                .collect(Collectors.toList());
-    }
-
 }

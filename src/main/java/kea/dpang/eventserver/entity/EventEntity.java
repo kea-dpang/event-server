@@ -111,8 +111,8 @@ public class EventEntity {
     }
 
     /**
-     *
-     * @param event_status
+     * 이벤트 상태를 변경하는 메서드입니다.
+     * @param event_status 변경할 이벤트 상태
      */
     public void updateStatus(Status event_status){
         this.eventStatus = event_status;

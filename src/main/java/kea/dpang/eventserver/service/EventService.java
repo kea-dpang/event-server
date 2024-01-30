@@ -36,7 +36,7 @@ public interface EventService {
     void createSellerEvent(RequestSellerEventDto sellerEvent);
 
     //상품 이벤트 수정(관리자)
-    void updateItemEvent(Long id, ItemEventDto itemEvent);
+    void updateItemEvent(Long id, RequestItemEventDto itemEvent);
 
     //판매처 이벤트 수정(관리자)
     void updateSellerEvent(Long id, SellerEventDto sellerEvent);

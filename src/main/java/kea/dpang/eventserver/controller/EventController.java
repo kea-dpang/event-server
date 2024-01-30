@@ -85,7 +85,7 @@ public interface EventController {
      * @param itemEventDto 상품 이벤트의 수정 내용
      * @return 응답 코드(200)
      */
-    ResponseEntity<BaseResponse> updateItemEvent(Long id, ItemEventDto itemEventDto);
+    ResponseEntity<BaseResponse> updateItemEvent(Long id, RequestItemEventDto itemEventDto);
 
     /**
      * API

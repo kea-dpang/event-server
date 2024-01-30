@@ -99,18 +99,18 @@ public class EventServiceImpl implements EventService{
     }
 
     @Override
-    public void updateItemEvent(Long id, ItemEventDto itemEvent) {
+    public void updateItemEvent(Long id, RequestItemEventDto itemEvent) {
         ItemEventEntity itemEventEntity = itemEventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException(id));
         itemEventEntity.updateItemEvent(itemEvent);
 
-        itemEvent.getTargetItems().stream()
-                .map(TargetItemDto::getItemId)
-                .forEach(itemId -> {
+        itemEvent.getTargetItems()
+                .forEach(itemId ->{
                     eventTargetItemRepository.findEventTargetItemByItemAndEvent(itemId, itemEventEntity)
                             .orElseThrow(() -> new EventTargetItemNotFoundException(itemId))
                             .update(itemId);
                 });
+
     }
 
     @Override

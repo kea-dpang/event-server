@@ -107,7 +107,7 @@ public class EventControllerImpl implements EventController{
     @Operation(summary = "관리자 기능 : 상품 이벤트 수정", description = "관리자가 자사몰에 등록된 상품 이벤트를 수정할 수 있습니다.")
     public ResponseEntity<BaseResponse> updateItemEvent(
             @PathVariable @Parameter(description = "상품 이벤트 ID") Long id,
-            @RequestBody @Parameter(description = "상품 이벤트 수정 정보") ItemEventDto itemEventDto
+            @RequestBody @Parameter(description = "상품 이벤트 수정 정보") RequestItemEventDto itemEventDto
     ){
         eventService.updateItemEvent(id,itemEventDto);
         return ResponseEntity.ok(new BaseResponse(200, "상품 이벤트 수정이 완료되었습니다."));
