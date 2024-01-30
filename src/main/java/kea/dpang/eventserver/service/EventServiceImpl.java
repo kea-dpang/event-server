@@ -111,7 +111,6 @@ public class EventServiceImpl implements EventService{
                             .orElseThrow(() -> new EventTargetItemNotFoundException(itemId))
                             .update(itemId);
                 });
-        updateEventStatus();
     }
 
     @Override
@@ -119,7 +118,6 @@ public class EventServiceImpl implements EventService{
         SellerEventEntity targetSellerEvent = sellerEventRepository.findById(id)
                 .orElseThrow(() -> new EventNotFoundException(id));
         targetSellerEvent.updateSellerEvent(sellerEvent);
-        updateEventStatus();
     }
 
     @Override
