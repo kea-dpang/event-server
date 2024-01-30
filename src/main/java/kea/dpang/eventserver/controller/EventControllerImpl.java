@@ -144,7 +144,7 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @GetMapping("/seller")
+    @GetMapping("/toSeller")
     @Operation(summary = "판매처 ID로 이름을 검색", description = "판매처 이벤트를 등록하거나 수정할 때 이벤트 대상 판매처를 검색하는 기능을 수행합니다.")
     public ResponseEntity<SuccessResponse<String>> getSellerName(
             @RequestParam @Parameter(description = "판매처 ID") Long id
