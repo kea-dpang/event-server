@@ -144,12 +144,12 @@ public class EventControllerImpl implements EventController{
     }
 
     @Override
-    @GetMapping("/toSeller")
-    @Operation(summary = "판매처 이름으로 판매처 ID를 검색", description = "판매처 이벤트를 등록하거나 수정할 때 이벤트 대상 판매처를 검색하는 기능을 수행합니다.")
-    public ResponseEntity<SuccessResponse<Long>> getSellerId(
-            @RequestParam @Parameter(description = "판매처 이름") String name
+    @GetMapping("/seller")
+    @Operation(summary = "판매처 ID로 이름을 검색", description = "판매처 이벤트를 등록하거나 수정할 때 이벤트 대상 판매처를 검색하는 기능을 수행합니다.")
+    public ResponseEntity<SuccessResponse<String>> getSellerName(
+            @RequestParam @Parameter(description = "판매처 ID") Long id
     ) {
-        return sellerSerivceClient.getSellerId(name);
+        return sellerSerivceClient.getSellerName(id);
     }
 
 }
