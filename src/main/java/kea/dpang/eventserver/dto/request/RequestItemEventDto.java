@@ -1,10 +1,8 @@
 package kea.dpang.eventserver.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kea.dpang.eventserver.dto.TargetItemDto;
 import kea.dpang.eventserver.entity.EventTargetItemEntity;
 import kea.dpang.eventserver.entity.ItemEventEntity;
-import kea.dpang.eventserver.entity.Status;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -51,7 +49,7 @@ public class RequestItemEventDto {
     /**
      * 상품 이벤트 대상 상품 목록
      */
-    private List<TargetItemDto> targetItems;
+    private List<Long> targetItems;
 
     /**
      * 상품 이벤트 객체를 build 하는 메서드
@@ -73,8 +71,9 @@ public class RequestItemEventDto {
      * @return EventTargetItemEntity 리스트
      */
     public List<EventTargetItemEntity> toEventTargetItems(ItemEventEntity itemEvent) {
+
         return this.targetItems.stream()
-                .map(targetItem -> targetItem.toEventTargetItem(itemEvent))
+                .map(itemEvent::toEventTargetItem)
                 .collect(Collectors.toList());
     }
 

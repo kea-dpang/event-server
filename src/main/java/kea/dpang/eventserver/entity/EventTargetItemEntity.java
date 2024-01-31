@@ -1,7 +1,8 @@
 package kea.dpang.eventserver.entity;
 
 import jakarta.persistence.*;
-import kea.dpang.eventserver.dto.TargetItemDto;
+import kea.dpang.eventserver.dto.request.RequestTargetItemDto;
+import kea.dpang.eventserver.dto.response.ResponseTargetItemDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,6 +40,7 @@ public class EventTargetItemEntity {
     @Column(name = "item_id")
     private Long item;
 
+
     /**
      * 이벤트 대상 상품 변경
      * @param item_id 이벤트 대상 상품의 ID
@@ -51,5 +53,18 @@ public class EventTargetItemEntity {
     public EventTargetItemEntity(ItemEventEntity eventId, Long itemId) {
         this.event = eventId;
         this.item = itemId;
+    }
+
+    public RequestTargetItemDto toTargetItemDto(){
+        return RequestTargetItemDto.builder()
+                .itemId(this.item)
+                .build();
+    }
+
+    public ResponseTargetItemDto toResponseTargetItemDto(String name){
+        return ResponseTargetItemDto.builder()
+                .itemName(name)
+                .itemId(this.item)
+                .build();
     }
 }

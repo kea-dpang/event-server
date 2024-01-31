@@ -8,5 +8,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface EventTargetItemRepository extends JpaRepository<EventTargetItemEntity,Long> {
-    Optional<EventTargetItemEntity> findEventTargetItemByItemAndEvent (Long itemId, ItemEventEntity itemEvent);
+    void deleteAllByEvent (ItemEventEntity itemEvent);
 }
