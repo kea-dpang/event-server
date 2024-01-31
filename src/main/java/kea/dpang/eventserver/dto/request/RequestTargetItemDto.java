@@ -1,6 +1,5 @@
-package kea.dpang.eventserver.dto;
+package kea.dpang.eventserver.dto.request;
 
-import io.swagger.v3.oas.annotations.media.Schema;
 import kea.dpang.eventserver.entity.EventTargetItemEntity;
 import kea.dpang.eventserver.entity.ItemEventEntity;
 import lombok.Builder;
@@ -12,7 +11,7 @@ import lombok.Getter;
  */
 @Getter
 @Builder
-public class TargetItemDto {
+public class RequestTargetItemDto {
     /**
      * 식별자
      */
@@ -27,6 +26,7 @@ public class TargetItemDto {
      * 상품 이벤트 대상 상품 ID
      */
     private Long itemId;
+
 
     /**
      * 이벤트 대상 상품 객체를 build 하는 메서드

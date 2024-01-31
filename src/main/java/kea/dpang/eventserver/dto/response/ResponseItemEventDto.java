@@ -1,6 +1,7 @@
-package kea.dpang.eventserver.dto;
+package kea.dpang.eventserver.dto.response;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import kea.dpang.eventserver.dto.request.RequestTargetItemDto;
 import kea.dpang.eventserver.entity.EventTargetItemEntity;
 import kea.dpang.eventserver.entity.ItemEventEntity;
 import kea.dpang.eventserver.entity.Status;
@@ -11,13 +12,9 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
-/**
- * 상품 이벤트 DTO
- * @author Tomas
- */
 @Builder
 @Getter
-public class ItemEventDto {
+public class ResponseItemEventDto {
     /**
      * 이벤트 ID
      */
@@ -55,7 +52,7 @@ public class ItemEventDto {
     /**
      * 상품 이벤트 대상 상품 목록
      */
-    private List<TargetItemDto> targetItems;
+    private List<ResponseTargetItemDto> targetItems;
 
     /**
      * 상품 이벤트 상태

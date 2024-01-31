@@ -1,10 +1,8 @@
 package kea.dpang.eventserver.dto.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import kea.dpang.eventserver.dto.TargetItemDto;
 import kea.dpang.eventserver.entity.EventTargetItemEntity;
 import kea.dpang.eventserver.entity.ItemEventEntity;
-import kea.dpang.eventserver.entity.Status;
 import lombok.Builder;
 import lombok.Getter;
 

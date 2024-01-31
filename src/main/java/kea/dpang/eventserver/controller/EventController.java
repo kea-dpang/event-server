@@ -1,18 +1,16 @@
 package kea.dpang.eventserver.controller;
 
-import io.swagger.v3.oas.annotations.Parameter;
 import kea.dpang.eventserver.base.BaseResponse;
 import kea.dpang.eventserver.base.SuccessResponse;
 import kea.dpang.eventserver.dto.EventDto;
-import kea.dpang.eventserver.dto.ItemEventDto;
 import kea.dpang.eventserver.dto.SellerEventDto;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
+import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
+import kea.dpang.eventserver.dto.response.ResponseItemEventListDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -25,10 +23,11 @@ public interface EventController {
     /**
      * API
      * GET : 사용자 - 상품 이벤트 목록 조회
+     *
      * @param pageable 페이지네이션을 위한 객체
      * @return 응답 코드(200), 상품 이벤트 목록
      */
-    ResponseEntity<SuccessResponse<Page<ItemEventDto>>> getItemEventList(Pageable pageable);
+    ResponseEntity<SuccessResponse<Page<ResponseItemEventListDto>>> getItemEventList(Pageable pageable);
 
     /**
      * API
@@ -52,7 +51,7 @@ public interface EventController {
      * @param id 상품 이벤트 ID
      * @return 응답 코드(200), 상품 이벤트 상세 정보
      */
-    ResponseEntity<SuccessResponse<ItemEventDto>> getItemEvent (Long id);
+    ResponseEntity<SuccessResponse<ResponseItemEventDto>> getItemEvent (Long id);
 
     /**
      * API
