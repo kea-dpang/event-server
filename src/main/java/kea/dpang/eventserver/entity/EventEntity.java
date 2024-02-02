@@ -89,6 +89,7 @@ public class EventEntity {
                 .startDate(this.startDate)
                 .endDate(this.endDate)
                 .registrationDate(this.registrationDate)
+                .imagePath(this.imagePath)
                 .type(type)
                 .build();
     }
