@@ -48,6 +48,11 @@ public class EventDto {
     private LocalDateTime registrationDate;
 
     /**
+     * 이벤트 이미지 경로
+     */
+    private String imagePath;
+
+    /**
      * 이벤트 타입
      */
     @Schema(example = "이벤트 타입")
