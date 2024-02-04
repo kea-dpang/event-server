@@ -1,6 +1,7 @@
 package kea.dpang.eventserver.entity;
 
 import jakarta.persistence.*;
+import kea.dpang.eventserver.base.BaseResponse;
 import kea.dpang.eventserver.client.ItemServiceClient;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
@@ -67,7 +68,7 @@ public class ItemEventEntity extends EventEntity {
                             } catch (ResponseStatusException e) {
                                 if (e.getMessage().contains("상품을 찾을 수 없음"))
                                     eventTargetItemRepository.deleteById(targetItem.getId());
-                                return null;
+                                throw e;
                             }
                         })
                 .toList();
