@@ -152,7 +152,7 @@ public class EventControllerImpl implements EventController {
     public ResponseEntity<SuccessResponse<String>> getSellerName(
             @RequestParam @Parameter(description = "판매처 ID") Long id
     ) {
-        return sellerSerivceClient.getSellerName(id);
+            return sellerSerivceClient.getSellerName(id);
     }
 
 }

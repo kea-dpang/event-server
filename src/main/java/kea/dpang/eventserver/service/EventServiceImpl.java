@@ -41,7 +41,8 @@ public class EventServiceImpl implements EventService {
         eventRepository.findAll().forEach(event -> {
             if (current.isBefore(event.getStartDate())) {
                 event.updateStatus(Status.WAITING);
-            } else if (current.isAfter(event.getStartDate()) && current.isBefore(event.getEndDate())) {
+            } else if ((current.isEqual(event.getStartDate()) || current.isAfter(event.getStartDate()))
+                    && current.isBefore(event.getEndDate())) {
                 event.updateStatus(Status.PROCEEDING);
             } else {
                 event.updateStatus(Status.END);
