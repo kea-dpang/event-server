@@ -3,7 +3,9 @@ package kea.dpang.eventserver.entity;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Transient;
+import kea.dpang.eventserver.client.SellerSerivceClient;
 import kea.dpang.eventserver.dto.SellerEventDto;
+import kea.dpang.eventserver.dto.response.ResponseSellerEventDto;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -42,6 +44,20 @@ public class SellerEventEntity extends EventEntity {
                 .endDate(this.getEndDate())
                 .imagePath(this.getImagePath())
                 .sellerId(this.getSellerId())
+                .build();
+    }
+
+    public ResponseSellerEventDto toResponseSellerEventDto(String sellerName){
+        return ResponseSellerEventDto.builder()
+                .discountRate(this.getDiscountRate())
+                .id(this.getId())
+                .eventName(this.getEventName())
+                .eventStatus(this.getEventStatus())
+                .startDate(this.getStartDate())
+                .endDate(this.getEndDate())
+                .imagePath(this.getImagePath())
+                .sellerId(this.getSellerId())
+                .sellerName(sellerName)
                 .build();
     }
 

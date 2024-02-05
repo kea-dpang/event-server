@@ -4,7 +4,6 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import kea.dpang.eventserver.base.BaseResponse;
-import kea.dpang.eventserver.base.ErrorResponse;
 import kea.dpang.eventserver.base.SuccessResponse;
 import kea.dpang.eventserver.client.ItemServiceClient;
 import kea.dpang.eventserver.client.SellerSerivceClient;
@@ -14,13 +13,13 @@ import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventListDto;
+import kea.dpang.eventserver.dto.response.ResponseSellerEventDto;
 import kea.dpang.eventserver.service.EventServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.List;
 
@@ -78,10 +77,10 @@ public class EventControllerImpl implements EventController {
     @Override
     @GetMapping("/seller/{id}")
     @Operation(summary = "관리자 기능 : 판매처 이벤트 상세 조회")
-    public ResponseEntity<SuccessResponse<SellerEventDto>> getSellerEvent(
+    public ResponseEntity<SuccessResponse<ResponseSellerEventDto>> getSellerEvent(
             @PathVariable @Parameter(description = "판매처 이벤트 ID") Long id
     ) {
-        SellerEventDto sellerEvent = eventService.getSellerEvent(id);
+        ResponseSellerEventDto sellerEvent = eventService.getSellerEvent(id);
         return ResponseEntity.ok(new SuccessResponse<>(200, "특정 판매처 이벤트 조회가 완료되었습니다.", sellerEvent));
     }
 

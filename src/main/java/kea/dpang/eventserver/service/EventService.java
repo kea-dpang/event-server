@@ -6,6 +6,7 @@ import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventListDto;
+import kea.dpang.eventserver.dto.response.ResponseSellerEventDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -28,7 +29,7 @@ public interface EventService {
     ResponseItemEventDto getItemEvent(Long id);
 
     //판매처 이벤트 상세 조회(관리자)
-    SellerEventDto getSellerEvent(Long id);
+    ResponseSellerEventDto getSellerEvent(Long id);
 
     //상품 이벤트 등록(관리자)
     void createItemEvent(RequestItemEventDto itemEvent);
