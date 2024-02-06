@@ -145,6 +145,13 @@ public class EventServiceImpl implements EventService {
     }
 
     @Override
+    public List<Long> getSellerEventsBySeller (List<Long> sellerIds){
+        return sellerIds.stream()
+                .map(sellerId->sellerEventRepository.findBySellerId(sellerId).getId())
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public void createItemEvent(RequestItemEventDto itemEvent) {
 
         log.info("===상품 이벤트 생성 시작===");

@@ -31,6 +31,8 @@ public interface EventService {
     //판매처 이벤트 상세 조회(관리자)
     ResponseSellerEventDto getSellerEvent(Long id);
 
+    List<Long> getSellerEventsBySeller(List<Long> sellerIds);
+
     //상품 이벤트 등록(관리자)
     void createItemEvent(RequestItemEventDto itemEvent);
 

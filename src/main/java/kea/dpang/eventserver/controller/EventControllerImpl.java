@@ -10,6 +10,7 @@ import kea.dpang.eventserver.client.SellerSerivceClient;
 import kea.dpang.eventserver.client.dto.RequestItemFindDto;
 import kea.dpang.eventserver.dto.SellerEventDto;
 import kea.dpang.eventserver.dto.EventDto;
+import kea.dpang.eventserver.dto.request.DeleteEventBySellersDto;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
@@ -134,7 +135,18 @@ public class EventControllerImpl implements EventController {
             @RequestBody @Parameter(description = "삭제할 이벤트 id 리스트") List<Long> ids
     ) {
         eventService.deleteEvent(ids);
-        return ResponseEntity.ok(new BaseResponse(200, "이벤트 삭제가 완료되었씁니다."));
+        return ResponseEntity.ok(new BaseResponse(200, "이벤트 삭제가 완료되었습니다."));
+    }
+
+    @Override
+    @DeleteMapping("/sellers")
+    @Operation(summary = "(BE) 판매처 삭제", description = "이벤트와 연결된 판매처가 삭제되었을 경우 연결된 이벤트 삭제")
+    public ResponseEntity<BaseResponse> deleteEventsBySeller(
+            @RequestBody @Parameter(description = "삭제된 판매처 ID 목록")DeleteEventBySellersDto requestDto
+    ){
+        eventService.deleteEvent(eventService.getSellerEventsBySeller(requestDto.getSellerIds()));
+        return ResponseEntity.ok(new BaseResponse(200,"삭제된 판매처(들)과 연결된 이벤트(들) 삭제가 완료되었습니다."));
+
     }
 
     @Override

@@ -1,10 +1,13 @@
 package kea.dpang.eventserver.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import kea.dpang.eventserver.base.BaseResponse;
 import kea.dpang.eventserver.base.SuccessResponse;
 import kea.dpang.eventserver.client.dto.RequestItemFindDto;
 import kea.dpang.eventserver.dto.EventDto;
 import kea.dpang.eventserver.dto.SellerEventDto;
+import kea.dpang.eventserver.dto.request.DeleteEventBySellersDto;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
@@ -13,6 +16,8 @@ import kea.dpang.eventserver.dto.response.ResponseSellerEventDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -105,6 +110,12 @@ public interface EventController {
      * @return 응답 코드(200)
      */
     ResponseEntity<BaseResponse> deleteEvents(List<Long> ids);
+
+    @DeleteMapping("/sellers")
+    @Operation(summary = "(BE) 판매처 삭제", description = "이벤트와 연결된 판매처가 삭제되었을 경우 연결된 이벤트 삭제")
+    ResponseEntity<BaseResponse> deleteEventsBySeller(
+            @RequestBody @Parameter(description = "삭제된 판매처 ID 목록") DeleteEventBySellersDto requestDto
+    );
 
     /**
      * API
