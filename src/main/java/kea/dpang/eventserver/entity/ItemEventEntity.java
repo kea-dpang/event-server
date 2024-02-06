@@ -64,7 +64,7 @@ public class ItemEventEntity extends EventEntity {
         List<ResponseTargetItemDto> responseTargetItemDtos = this.targetItems.stream().map(
                         targetItem -> {
                             try {
-                                return targetItem.toResponseTargetItemDto(itemServiceClient.getItemName(targetItem.getItem()).getBody().getData());
+                                return targetItem.toResponseTargetItemDto(itemServiceClient.getItemName(targetItem.getItem()).getBody().getData().getName());
                             } catch (Exception e) {
                                 if (e.getMessage().contains("상품을 찾을 수 없음"))
                                     eventTargetItemRepository.deleteById(targetItem.getId());
