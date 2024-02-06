@@ -2,6 +2,7 @@ package kea.dpang.eventserver.controller;
 
 import kea.dpang.eventserver.base.BaseResponse;
 import kea.dpang.eventserver.base.SuccessResponse;
+import kea.dpang.eventserver.client.dto.RequestItemFindDto;
 import kea.dpang.eventserver.dto.EventDto;
 import kea.dpang.eventserver.dto.SellerEventDto;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
@@ -108,10 +109,11 @@ public interface EventController {
     /**
      * API
      * GET : 상품 서비스 로부터 상품 ID에 해당하는 상품 이름을 반환받는다.
+     *
      * @param itemId 이름을 반환받을 상품의 ID
      * @return 응답 코드(200), 상품의 이름
      */
-    ResponseEntity<SuccessResponse<String>> getItemName(Long itemId);
+    ResponseEntity<SuccessResponse<RequestItemFindDto>> getItemName(Long itemId);
 
     /**
      * API

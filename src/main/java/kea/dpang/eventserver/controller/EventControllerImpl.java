@@ -7,6 +7,7 @@ import kea.dpang.eventserver.base.BaseResponse;
 import kea.dpang.eventserver.base.SuccessResponse;
 import kea.dpang.eventserver.client.ItemServiceClient;
 import kea.dpang.eventserver.client.SellerSerivceClient;
+import kea.dpang.eventserver.client.dto.RequestItemFindDto;
 import kea.dpang.eventserver.dto.SellerEventDto;
 import kea.dpang.eventserver.dto.EventDto;
 import kea.dpang.eventserver.dto.request.RequestItemEventDto;
@@ -139,7 +140,7 @@ public class EventControllerImpl implements EventController {
     @Override
     @GetMapping("/toItme/{itemId}")
     @Operation(summary = "상품 ID로 상품 이름을 검색", description = "상품 이벤트를 등록하거나 수정할 때 이벤트 대상 상품을 검색하는 기능을 수행합니다.")
-    public ResponseEntity<SuccessResponse<String>> getItemName(
+    public ResponseEntity<SuccessResponse<RequestItemFindDto>> getItemName(
             @PathVariable @Parameter(description = "상품 ID") Long itemId
     ) {
         return itemServiceClient.getItemName(itemId);
