@@ -8,6 +8,7 @@ import kea.dpang.eventserver.dto.request.RequestItemEventDto;
 import kea.dpang.eventserver.dto.request.RequestSellerEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventDto;
 import kea.dpang.eventserver.dto.response.ResponseItemEventListDto;
+import kea.dpang.eventserver.dto.response.ResponseSellerEventDto;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -56,10 +57,11 @@ public interface EventController {
     /**
      * API
      * GET : 특정 판매처 이벤트의 상세 정보를 조회합니다.
+     *
      * @param id 판매처 이벤트 ID
      * @return 응답 코드(200), 판매처 이벤트 상세 정보
      */
-    ResponseEntity<SuccessResponse<SellerEventDto>> getSellerEvent (Long id);
+    ResponseEntity<SuccessResponse<ResponseSellerEventDto>> getSellerEvent (Long id);
 
     /**
      * API
