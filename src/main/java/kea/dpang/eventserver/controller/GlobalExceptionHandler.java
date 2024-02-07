@@ -4,6 +4,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import kea.dpang.eventserver.exception.EventNotFoundException;
 import kea.dpang.eventserver.base.ErrorResponse;
 import kea.dpang.eventserver.exception.EventTargetItemNotFoundException;
+import kea.dpang.eventserver.exception.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -23,6 +24,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(EventTargetItemNotFoundException.class)
     public ResponseEntity<ErrorResponse> handleEventTargetItemNotFoundException(HttpServletRequest request, EventTargetItemNotFoundException ex) {
+        ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), ex.getClass().getSimpleName(), request.getRequestURI(), LocalDateTime.now());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(FeignException.class)
+    public ResponseEntity<ErrorResponse> handleFeignException(HttpServletRequest request, FeignException ex) {
         ErrorResponse errorResponse = new ErrorResponse(HttpStatus.NOT_FOUND.value(), ex.getMessage(), ex.getClass().getSimpleName(), request.getRequestURI(), LocalDateTime.now());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }

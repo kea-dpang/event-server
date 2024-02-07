@@ -21,6 +21,6 @@ public interface ItemServiceClient {
 
     // 이벤트가 삭제될 경우 해당 이벤트의 대상이 되었던 상품들의 할인율 제거
     @DeleteMapping("/api/items/eventDiscount")
-    ResponseEntity<BaseResponse> deleteEvent(@RequestParam Long id);
+    ResponseEntity<BaseResponse> deleteEvent(@RequestParam Long eventId);
 
 }
